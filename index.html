@@ -32,37 +32,64 @@
       <!-- Timeblocks go here -->
     </div>
 
-
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script type="text/javascript">
+      var containerDiv = $(".container");
+      var schedule = {
+        timeArray: [
+          "9 AM",
+          "10 AM",
+          "11 AM",
+          "12 PM",
+          "1 PM",
+          "2 PM",
+          "3 PM",
+          "4 PM",
+          "5 PM",
+        ],
+        getTime: function () {
+          var currentDate = moment().format("MMMM Do YYYY, h:mm:ss a");
+          // var currentHour = moment().hour();
+          var currentHour = 10;
 
+          $("#currentDay").text(currentDate);
 
+          for (let index = 0; index < schedule.timeArray.length; index++) {
+            const hour = index + 9;
+            console.log(hour);
+            console.log(currentHour);
+            if (hour < currentHour) {
+              $("div[data-number=" + hour + "]").addClass("past");
+            } else if (hour === currentHour) {
+              $("div[data-number=" + hour + "]").addClass("present");
+            } else if (hour > currentHour) {
+              $("div[data-number=" + hour + "]").addClass("future");
+            }
+          }
+        },
+      };
 
-      containerDiv = $(".container");
-
-      currentDate = moment().format("MMM Do YY");
-      $("#currentDay").append(currentDate);
-  
-      
-      currentHour = moment().hour();
-
-      timeArray = ["9 AM", "10 AM","11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM" ]
-      
-      for (let index = 0; index < timeArray.length; index++) {
-        const element = timeArray[index];
-        timeDiv = $("<div>")
-        timeDiv.addClass("row time-block");
-        timeDiv.attr("data-number", index + 9 )
-        console.log(element);
-        hourDiv = $("<div>");
-        hourDiv.addClass("hour");
+      for (let index = 0; index < schedule.timeArray.length; index++) {
+        const element = schedule.timeArray[index];
+        var timeDiv = $("<textarea>");
+        timeDiv.addClass("row");
+        var hourDiv = $("<div>");
+        hourDiv.addClass("hour time-block");
+        hourDiv.attr("data-number", index + 9);
         hourDiv.text(element);
-        timeDiv.append(hourDiv);
+        containerDiv.append(hourDiv);
         containerDiv.append(timeDiv);
+        var button = $("<button>");
+          button.addClass("saveBtn");
+          button.text("Save");
+          containerDiv.append(button)
+          
       }
 
-      
+      schedule.getTime();
+
+      setInterval(schedule.getTime, 1000);
     </script>
   </body>
 </html>

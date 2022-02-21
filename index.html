@@ -57,8 +57,8 @@
 
           for (let index = 0; index < schedule.timeArray.length; index++) {
             const hour = index + 9;
-            console.log(hour);
-            console.log(currentHour);
+            // console.log(hour);
+            // console.log(currentHour);
             if (hour < currentHour) {
               $("div[data-number=" + hour + "]").addClass("past");
             } else if (hour === currentHour) {
@@ -68,12 +68,17 @@
             }
           }
         },
+        getStorage: function () {
+          var getPlans = JSON.parse(localStorage.getItem("plan"));
+          console.log(getPlans);
+        },
       };
 
       for (let index = 0; index < schedule.timeArray.length; index++) {
         const element = schedule.timeArray[index];
         var descriptionDiv = $("<textarea>");
         descriptionDiv.addClass("description col-md-10");
+        descriptionDiv.attr("data-number", index);
         var rowDiv = $("<div>");
         rowDiv.addClass("row time-block");
         var hourDiv = $("<div>");
@@ -82,22 +87,51 @@
         hourDiv.text(element);
         var button = $("<button>");
         button.addClass("saveBtn col-md-1");
-        button.attr("data-number", index + 9);
+        button.attr("data-number", index);
         button.text("Save");
         rowDiv.append(hourDiv);
         rowDiv.append(descriptionDiv);
         rowDiv.append(button);
-        var button = $("<button>");
-        button.addClass("saveBtn");
-        button.attr("data-number", index + 9);
-        button.text("Save");
         containerDiv.append(rowDiv);
-
       }
 
       schedule.getTime();
+      schedule.getStorage();
 
       setInterval(schedule.getTime, 1000);
+
+      $(".saveBtn").on("click", function () {
+        var number = $(this).attr("data-number");
+        var text = $(this).prev().val();
+        var getThePlan = JSON.parse(localStorage.getItem("plan"));
+
+        var planOfTheHour = {
+          textOfTheHour: text.trim(),
+          hourSlot: parseInt(number),
+        };
+
+        console.log(getThePlan);
+        console.log(planOfTheHour);
+
+        if (getThePlan) {
+          const lastPlanIndex = getThePlan.findIndex(
+            (plan) => plan.hourSlot === planOfTheHour.hourSlot
+          );
+
+          console.log(lastPlanIndex);
+
+          if (lastPlanIndex !== -1) {
+            getThePlan[lastPlanIndex] = planOfTheHour;
+            localStorage.setItem("plan", JSON.stringify(getThePlan));
+          } else {
+            localStorage.setItem("plan", JSON.stringify(getThePlan));
+          }
+        } else {
+          var plannerArray = [];
+          plannerArray.push(planOfTheHour);
+          localStorage.setItem("plan", JSON.stringify(plannerArray));
+        }
+      });
     </script>
   </body>
 </html>

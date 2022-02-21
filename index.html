@@ -50,8 +50,8 @@
         ],
         getTime: function () {
           var currentDate = moment().format("MMMM Do YYYY, h:mm:ss a");
-          // var currentHour = moment().hour();
-          var currentHour = 10;
+          var currentHour = moment().hour();
+          // var currentHour = 10;
 
           $("#currentDay").text(currentDate);
 
@@ -72,19 +72,27 @@
 
       for (let index = 0; index < schedule.timeArray.length; index++) {
         const element = schedule.timeArray[index];
-        var timeDiv = $("<textarea>");
-        timeDiv.addClass("row");
+        var descriptionDiv = $("<textarea>");
+        descriptionDiv.addClass("description col-md-10");
+        var rowDiv = $("<div>");
+        rowDiv.addClass("row time-block");
         var hourDiv = $("<div>");
-        hourDiv.addClass("hour time-block");
+        hourDiv.addClass("hour col-md-1");
         hourDiv.attr("data-number", index + 9);
         hourDiv.text(element);
-        containerDiv.append(hourDiv);
-        containerDiv.append(timeDiv);
         var button = $("<button>");
-          button.addClass("saveBtn");
-          button.text("Save");
-          containerDiv.append(button)
-          
+        button.addClass("saveBtn col-md-1");
+        button.attr("data-number", index + 9);
+        button.text("Save");
+        rowDiv.append(hourDiv);
+        rowDiv.append(descriptionDiv);
+        rowDiv.append(button);
+        var button = $("<button>");
+        button.addClass("saveBtn");
+        button.attr("data-number", index + 9);
+        button.text("Save");
+        containerDiv.append(rowDiv);
+
       }
 
       schedule.getTime();

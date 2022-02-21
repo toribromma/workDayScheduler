@@ -71,6 +71,13 @@
         getStorage: function () {
           var getPlans = JSON.parse(localStorage.getItem("plan"));
           console.log(getPlans);
+          // var textAreaDescriptions = $("textarea.description");
+          // console.log(textAreaDescriptions[0])
+          // for (let index = 0; index < textAreaDescriptions.length; index++) {
+          //   const element = textAreaDescriptions[index];
+          //   console.log(element);
+          //   element.append(getPlans[index].textOfTheHour);
+          // }
         },
       };
 
@@ -117,13 +124,13 @@
           const lastPlanIndex = getThePlan.findIndex(
             (plan) => plan.hourSlot === planOfTheHour.hourSlot
           );
-
           console.log(lastPlanIndex);
-
           if (lastPlanIndex !== -1) {
             getThePlan[lastPlanIndex] = planOfTheHour;
             localStorage.setItem("plan", JSON.stringify(getThePlan));
-          } else {
+          } else if (lastPlanIndex === -1) {
+            console.log("hey")
+            getThePlan.push(planOfTheHour);
             localStorage.setItem("plan", JSON.stringify(getThePlan));
           }
         } else {

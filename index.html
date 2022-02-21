@@ -51,14 +51,10 @@
         getTime: function () {
           var currentDate = moment().format("MMMM Do YYYY, h:mm:ss a");
           var currentHour = moment().hour();
-          // var currentHour = 10;
-
           $("#currentDay").text(currentDate);
 
           for (let index = 0; index < schedule.timeArray.length; index++) {
             const hour = index + 9;
-            // console.log(hour);
-            // console.log(currentHour);
             if (hour < currentHour) {
               $("div[data-number=" + hour + "]").addClass("past");
             } else if (hour === currentHour) {
@@ -70,38 +66,38 @@
         },
         getStorage: function () {
           var getPlans = JSON.parse(localStorage.getItem("plan"));
-          console.log(getPlans);
-          // var textAreaDescriptions = $("textarea.description");
-          // console.log(textAreaDescriptions[0])
-          // for (let index = 0; index < textAreaDescriptions.length; index++) {
-          //   const element = textAreaDescriptions[index];
-          //   console.log(element);
-          //   element.append(getPlans[index].textOfTheHour);
-          // }
+          var textAreaDescriptions = $("textarea.description");
+
+          for (let index = 0; index < getPlans.length; index++) {
+            const element = textAreaDescriptions[index];
+            element.append(getPlans[index].textOfTheHour);
+          }
+        },
+        getSchedule: function () {
+          for (let index = 0; index < schedule.timeArray.length; index++) {
+            const element = schedule.timeArray[index];
+            var descriptionDiv = $("<textarea>");
+            descriptionDiv.addClass("description col-md-10");
+            descriptionDiv.attr("data-number", index);
+            var rowDiv = $("<div>");
+            rowDiv.addClass("row time-block");
+            var hourDiv = $("<div>");
+            hourDiv.addClass("hour col-md-1");
+            hourDiv.attr("data-number", index + 9);
+            hourDiv.text(element);
+            var button = $("<button>");
+            button.addClass("saveBtn col-md-1");
+            button.attr("data-number", index);
+            button.text("Save");
+            rowDiv.append(hourDiv);
+            rowDiv.append(descriptionDiv);
+            rowDiv.append(button);
+            containerDiv.append(rowDiv);
+          }
         },
       };
 
-      for (let index = 0; index < schedule.timeArray.length; index++) {
-        const element = schedule.timeArray[index];
-        var descriptionDiv = $("<textarea>");
-        descriptionDiv.addClass("description col-md-10");
-        descriptionDiv.attr("data-number", index);
-        var rowDiv = $("<div>");
-        rowDiv.addClass("row time-block");
-        var hourDiv = $("<div>");
-        hourDiv.addClass("hour col-md-1");
-        hourDiv.attr("data-number", index + 9);
-        hourDiv.text(element);
-        var button = $("<button>");
-        button.addClass("saveBtn col-md-1");
-        button.attr("data-number", index);
-        button.text("Save");
-        rowDiv.append(hourDiv);
-        rowDiv.append(descriptionDiv);
-        rowDiv.append(button);
-        containerDiv.append(rowDiv);
-      }
-
+      schedule.getSchedule();
       schedule.getTime();
       schedule.getStorage();
 
@@ -129,7 +125,7 @@
             getThePlan[lastPlanIndex] = planOfTheHour;
             localStorage.setItem("plan", JSON.stringify(getThePlan));
           } else if (lastPlanIndex === -1) {
-            console.log("hey")
+            console.log("hey");
             getThePlan.push(planOfTheHour);
             localStorage.setItem("plan", JSON.stringify(getThePlan));
           }

@@ -65,7 +65,33 @@
           }
         },
         getStorage: function () {
+          // var planOfTheHour = {
+          //       textOfTheHour: text.trim(),
+          //       hourSlot: parseInt(number),
+          //     };
           var getPlans = JSON.parse(localStorage.getItem("plan"));
+          console.log(getPlans)
+
+          if (!getPlans) {
+            console.log("hi")
+            var setPlans = []
+
+              for (let index = 0; index < schedule.timeArray.length; index++) {
+                var planOfTheHour = {
+                textOfTheHour: "",
+                hourSlot: index,
+              };
+                // planOfTheHour.hourSlot === index;
+                // console.log(index)
+                setPlans.push(planOfTheHour);
+              }
+              // console.log(setPlans);
+
+              // getPlans.push(planOfTheHour)
+              localStorage.setItem("plan", JSON.stringify(setPlans));
+
+
+          }
           var textAreaDescriptions = $("textarea.description");
 
           for (let index = 0; index < getPlans.length; index++) {

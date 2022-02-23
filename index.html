@@ -56,10 +56,16 @@
           for (let index = 0; index < schedule.timeArray.length; index++) {
             const hour = index + 9;
             if (hour < currentHour) {
+              $("div[data-number=" + hour + "]").removeClass("present");
+              $("div[data-number=" + hour + "]").removeClass("future");
               $("div[data-number=" + hour + "]").addClass("past");
             } else if (hour === currentHour) {
+              $("div[data-number=" + hour + "]").removeClass("past");
+              $("div[data-number=" + hour + "]").removeClass("future");
               $("div[data-number=" + hour + "]").addClass("present");
             } else if (hour > currentHour) {
+              $("div[data-number=" + hour + "]").removeClass("past");
+              $("div[data-number=" + hour + "]").removeClass("present");
               $("div[data-number=" + hour + "]").addClass("future");
             }
           }
